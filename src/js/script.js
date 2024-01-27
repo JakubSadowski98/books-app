@@ -10,12 +10,17 @@
     containerOf: {
       list: '.books-list',
     },
+    imageCover: {
+      image: '.book__image',
+    },
+  };
+
+  const classNames = {
+    bookList: {
+      addToFavorite: 'favorite',
+    },
   };
 /*
-  const classNames = {
-
-  };
-
   const settings = {
 
   };
@@ -38,6 +43,27 @@
       listContainer.appendChild(dom.element);
     }
   }
-//console.log(dataSource);
+
+  const favoriteBooks = []; //tablica z identyfikatorami książek, które dodano do ulubionych
+
+  function initActions(){ //nadaje książkom klasę "favorite" i dodaje ich id do tablicy "favoriteBooks"
+    const bookImageList = document.querySelectorAll(select.imageCover.image); //referencja do listy wszystkich elementów ".book__image"
+
+    for(let bookImage of bookImageList){
+      bookImage.addEventListener('dblclick', function(event){
+        event.preventDefault();
+        // add clas="favorite" to bookImage
+        bookImage.classList.add(classNames.bookList.addToFavorite);
+        // get string value from attribute data-id
+        const bookId = bookImage.getAttribute('data-id');
+        // add bookId to favoriteBooks array
+        favoriteBooks.push(bookId);
+      });
+    }
+  }
+
   render();
+  initActions();
 }
+
+//console.log(dataSource);
