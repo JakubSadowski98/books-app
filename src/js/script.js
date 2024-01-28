@@ -5,7 +5,7 @@
   /* *********************************************************************************************************************************************************************************************************************************************************************************** */
   const select = {
     templateOf: {
-      bookList: "#template-book",
+      bookList: '#template-book',
     },
     containerOf: {
       list: '.books-list',
@@ -20,7 +20,7 @@
       addToFavorite: 'favorite',
     },
   };
-/*
+  /*
   const settings = {
 
   };
@@ -47,27 +47,28 @@
   const favoriteBooks = []; //tablica z identyfikatorami książek, które dodano do ulubionych
 
   function initActions(){ //nadaje książkom klasę "favorite" i dodaje ich id do tablicy "favoriteBooks"
-    const bookImageList = document.querySelectorAll(select.imageCover.image); //referencja do listy wszystkich elementów ".book__image"
+    const booksList = document.querySelector(select.containerOf.list); //referencja do elementu ".books-list"
 
-    for(let bookImage of bookImageList){
-      bookImage.addEventListener('dblclick', function(event){
-        event.preventDefault();
-         // get value (id) from attribute data-id
-         const bookId = bookImage.getAttribute('data-id');
+    booksList.addEventListener('dblclick', function(event){ //nasłuchiowanie kontenera ".books-list", w którym znajdują się elementy ".book__image"
+      event.preventDefault();
+      // find clickedElement using properties target and offsetParent in event object
+      const clickedElement = event.target.offsetParent //(!) referencja "event.target.offsetParent" wskazuje na element ".book__image", jednak w rzeczywistości klikniętym elementem jest "img", dlatego dodatkowa właściwość offsetParent wskazuje na rodzica "img", czyli ".book__image"
+      // check if clickedElement contains proper class
+      if(clickedElement.classList.contains('book__image')){
+        // get value (id) from attribute data-id
+        const bookId = clickedElement.getAttribute('data-id');
         // check if book is not added to favorites
         if(!favoriteBooks.includes(bookId)){
-          // add class favorite to bookImage; add bookId to favoriteBooks array
-          bookImage.classList.add(classNames.bookList.addToFavorite);
+          // add class favorite to clickedElement; add bookId to favoriteBooks array
+          clickedElement.classList.add(classNames.bookList.addToFavorite);
           favoriteBooks.push(bookId);
-          console.log(favoriteBooks);
         } else {
-          // remove class favorite from bookImage; remove bookId from favoriteBooks array
-          bookImage.classList.remove(classNames.bookList.addToFavorite);
-          favoriteBooks.splice(favoriteBooks.indexOf('bookId'), 1);
-          console.log(favoriteBooks);
+          // remove class favorite from clickedElement; remove bookId from favoriteBooks array
+          clickedElement.classList.remove(classNames.bookList.addToFavorite);
+          favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1); //(!)
         }
-      });
-    }
+      }
+    });
   }
 
   render();
