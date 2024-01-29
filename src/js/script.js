@@ -33,6 +33,12 @@
   /* *********************************************************************************************************************************************************************************************************************************************************************************** */
   function render(){ //przechodzi po wszyskich książkach w tablicy "dataSource.books" i renderuje dla nich reprezentacje HTML na liście ".book-list"
     for(let bookData of dataSource.books){
+      // create constants to style ratings (background-color, width)
+      const ratingBgc = determineRatingBgc(bookData.rating);
+      const ratingWidth = bookData.rating * 10;
+      // add properties with constans value to object
+      bookData.ratingWidth = ratingWidth;
+      bookData.ratingBgc = ratingBgc;
       // create dom object storing references to DOM elements
       const dom = {};
       // generate HTML based on template
@@ -108,6 +114,17 @@
         }
       } else bookImage[dataset=bookDataId].classList.remove(classNames.bookList.hideBook);
     }
+  }
+
+  function determineRatingBgc(rating){ //(!) stylowanie ocen pod książkami
+    let background;
+
+    if(rating < 6){background = 'linear-gradient(to bottom, #fefcea 0%, #f1da36 100%)';}
+    if(rating > 6 && rating <= 8){background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';}
+    if(rating > 8 && rating <= 9){background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';}
+    if(rating > 9){background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';}
+
+    return background;
   }
   /* *********************************************************************************************************************************************************************************************************************************************************************************** */
   render();
